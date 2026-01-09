@@ -1,0 +1,10 @@
+liste = [1, 4, 5, 67, 23.2, -12, 0]
+print(liste[0])
+print(liste[-1])
+print(sorted(liste))
+print(sorted(liste, reverse=True))
+print(liste[0:3])
+print(liste[-3::1])
+print(min(liste))
+print(max(liste))
+print(sum(liste))
