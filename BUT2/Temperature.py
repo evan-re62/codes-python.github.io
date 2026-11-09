@@ -23,9 +23,25 @@ class Temperature:
     def kelvin(self):
         return self._celsius + 273.15
 
-temp1 = Temperature(-273.16)
-temp2 = Temperature(2)
-print(temp2.celsius)
-temp2.celsius = -273.12
-temp1 = Temperature.fromfahrenheit(32)
-print(temp1.celsius)
+# --- Tests à valider ---
+t = Temperature(20)
+assert t.celsius == 20
+assert t.fahrenheit == 68
+assert t.kelvin == 293.15
+
+t.celsius = -10
+assert t.celsius == -10
+assert t.kelvin == 263.15
+
+# Test de la validation
+try:
+    t_invalide = Temperature(-300)
+except ValueError as e:
+    print(f"Exception attrapée avec succès : {e}")
+
+try:
+    t.celsius = -400
+except ValueError as e:
+    print(f"Exception attrapée avec succès : {e}")
+
+print("Tests de l'exercice 3 passés avec succès !")

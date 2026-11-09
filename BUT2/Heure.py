@@ -27,12 +27,21 @@ class Heure:
     def __eq__(self, other):
         return self.h == other.h and self.m == other.m and self.s == other.s
 
-heure1 = Heure.fromsecond(15000)
-heure2 = Heure(4, 10, 0)
-print(heure1)
-print(heure2)
-print(heure1 == heure2)
+h1 = Heure(1, 1, 1)
+print(f"repr(h1): {repr(h1)}")
+print(f"str(h1): {str(h1)}")
 
-            
+# Test du classmethod
+total_secs = 3661 # 1 heure, 1 minute, 1 seconde
+h2 = Heure.fromsecond(total_secs)
+assert h2.h == 1 and h2.m == 1 and h2.s == 1
+
+# Test de l'égalité
+h3 = Heure(1, 1, 1)
+assert h1 == h2
+assert h1 == h3
+assert h2 != Heure(1, 1, 2)
+
+print("Tests de l'exercice 4 passés avec succès !")
 
 

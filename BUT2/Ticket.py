@@ -6,11 +6,18 @@ class Ticket:
     def __repr__ (self):
         return f"Votre Ticket est le numéro {self.id}"
 
-t1 = Ticket()
-t2 = Ticket()
-t3 = Ticket()
+# --- Tests à valider ---
+ticket1 = Ticket()
+ticket2 = Ticket()
+ticket3 = Ticket()
 
-print(t1)
-print(t2)
-print(t3)
+print(ticket1)
+print(ticket2)
+print(ticket3)
 
+assert ticket1.id == 0
+assert ticket2.id == 1
+assert ticket3.id == 2
+assert Ticket.compteur == 3, "Le compteur de classe devrait être à 3"
+
+print("Tests de l'exercice 2 passés avec succès !")
