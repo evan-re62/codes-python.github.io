@@ -53,7 +53,7 @@ def calculer_gain(grille):
 
 
 def jeu():
-    dette = 1000
+    dette = 100
     deposer = 30
     tour_restant = 4
     argent = 14
@@ -62,56 +62,69 @@ def jeu():
         print(f"\nDette = {dette}")
         print(f"\nArgent deposer = {deposer}")
         print(f"\nTours restants = {tour_restant}")
-        print("\nQue voulez-vous faire ?\n 1. Jouer\n 2. Déposer")
+        print("\nQue voulez-vous faire ?\n 1. Jouer\n 2. Déposer\n 3. Les symboles")
         print(f"Vous avez {int(argent)}$")
-        choix = int(input(""))
+        choix = input("")
 
-        if choix == 1:
+        if choix == "1":
             if tour_restant > 0:
+                if argent >= 3:
                  
-                print("\nVoulez vous faire 7 roue, ou 3 ?")
-                nb_roue = int(input(""))
-                if nb_roue == 7:
-                    argent -= 7
-                    for i in range(7):
-                        time.sleep(2)
-                        print(f"Grille numéro {i}")
-                        print(" ")
-                        grille = [[random.choices(SYMBOLES, weights=POURCENTAGE, k=1)[0] for _ in range(5)] for _ in range(3)]
-                        for ligne in grille:
-                            print(*ligne)
-                            time.sleep(0.5)
-                        argent_preced = copy.copy(argent)
-                        argent += calculer_gain(grille)
-                        print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
-                    
-                if nb_roue == 3:
-                                argent -= 3
-                                for i in range(3):
-                                    time.sleep(2)
-                                    print(f"Grille numéro {i}")
-                                    print(" ")
-                                    grille = [[random.choices(SYMBOLES, weights=POURCENTAGE, k=1)[0] for _ in range(5)] for _ in range(3)]
-                                    for ligne in grille:
-                                        print(*ligne)
-                                        time.sleep(0.5)
-                                    argent_preced = copy.copy(argent)
-                                    argent += calculer_gain(grille)
-                                    print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
-                tour_restant -= 1
-                argent += int(deposer * 1.07 - deposer)
-                print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
+                    print("\nVoulez vous faire 7 roue, ou 3 ?")
+                    nb_roue = int(input(""))
+                    if nb_roue == 7:
+                        argent -= 7
+                        for i in range(7):
+                            time.sleep(2)
+                            print(f"Grille numéro {i+1}")
+                            print(" ")
+                            grille = [[random.choices(SYMBOLES, weights=POURCENTAGE, k=1)[0] for _ in range(5)] for _ in range(3)]
+                            for ligne in grille:
+                                print(*ligne)
+                                time.sleep(0.5)
+                            argent_preced = copy.copy(argent)
+                            argent += calculer_gain(grille)
+                            print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
+                        tour_restant -= 1
+                        argent += int(deposer * 1.07 - deposer)
+                        print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
+                        
+                    if nb_roue == 3:
+                        argent -= 3
+                        for i in range(3):
+                            time.sleep(2)
+                            print(f"Grille numéro {i+1}")
+                            print(" ")
+                            grille = [[random.choices(SYMBOLES, weights=POURCENTAGE, k=1)[0] for _ in range(5)] for _ in range(3)]
+                            for ligne in grille:
+                                print(*ligne)
+                                time.sleep(0.5)
+                            argent_preced = copy.copy(argent)
+                            argent += calculer_gain(grille)
+                            print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
+                        tour_restant -= 1
+                        argent += int(deposer * 1.07 - deposer)
+                        print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
+                
             else:
                 print("Vous n'avez plus de tirage de disponible")
 
 
-
-        if choix == 2:
+        if choix == "3":
+                print("Les symboles et leurs chances d'appartions et valeurs")
+                print(f"{SYMBOLES}\n{POURCENTAGE}\n")
+                print(f"{VALEURS_SYMBOLES}")
+                
+        
+        if choix == "2":
             print("Combiens vouslez vous déposer ?")
             thune = int(input(""))
-            deposer += thune
-            argent -= thune
-            print(f"\nIl reste {int(dette - deposer)}$ à déposer pour passer au prochain tour")
+            if thune <= argent:
+                deposer += thune
+                argent -= thune
+                print(f"\nIl reste {int(dette - deposer)}$ à déposer pour passer au prochain tour")
+            else:
+                print("Veuillez entré une somme inférieur ou égale à la votre.")
 
         if tour_restant == 0 and deposer + argent < dette:
             print("Malheureusement, vous ne pouvez plus payer vos dettes. Vous êtes éliminé.")
