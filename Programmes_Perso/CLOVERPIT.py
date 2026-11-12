@@ -1,3 +1,5 @@
+#LE CODE N'A PAS ÉTÉ GÉNÉRÉ PART IA
+#Copyright Evan Renoult (ne pas voler svp)
 import random
 import time
 import copy
@@ -62,58 +64,61 @@ def jeu():
         print(f"\nDette = {dette}")
         print(f"\nArgent deposer = {deposer}")
         print(f"\nTours restants = {tour_restant}")
-        print("\nQue voulez-vous faire ?\n 1. Jouer\n 2. Déposer\n 3. Les symboles")
+        print("\nQue voulez-vous faire ?\n 1. Jouer\n 2. Déposer\n 3. Les symboles\n 4. Les formes")
         print(f"Vous avez {int(argent)}$")
         choix = input("")
+
+        
 
         if choix == "1":
             if tour_restant > 0:
                 if argent >= 3:
-                 
-                    print("\nVoulez vous faire 7 roue, ou 3 ?")
-                    nb_roue = int(input(""))
-                    if nb_roue == 7:
-                        argent -= 7
-                        for i in range(7):
-                            time.sleep(2)
-                            print(f"Grille numéro {i+1}")
-                            print(" ")
-                            grille = [[random.choices(SYMBOLES, weights=POURCENTAGE, k=1)[0] for _ in range(5)] for _ in range(3)]
-                            for ligne in grille:
-                                print(*ligne)
-                                time.sleep(0.5)
-                            argent_preced = copy.copy(argent)
-                            argent += calculer_gain(grille)
-                            print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
-                        tour_restant -= 1
-                        argent += int(deposer * 1.07 - deposer)
-                        print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
+                    while True:
+            
+                        print("\nVoulez vous faire 7 roue, ou 3 ?")
+                        nb_roue = input("")
+                        if nb_roue == "7" and argent >= 7:
+                            argent -= 7
+                            for i in range(7):
+                                time.sleep(2)
+                                print(f"Grille numéro {i+1}")
+                                print(" ")
+                                grille = [[random.choices(SYMBOLES, weights=POURCENTAGE, k=1)[0] for _ in range(5)] for _ in range(3)]
+                                for ligne in grille:
+                                    print(*ligne)
+                                    time.sleep(0.5)
+                                argent_preced = copy.copy(argent)
+                                argent += calculer_gain(grille)
+                                print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
+                            tour_restant -= 1
+                            argent += int(deposer * 1.07 - deposer)
+                            print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
+                            break
+                            
+                        elif nb_roue == "3":
+                            argent -= 3
+                            for i in range(3):
+                                time.sleep(2)
+                                print(f"Grille numéro {i+1}")
+                                print(" ")
+                                grille = [[random.choices(SYMBOLES, weights=POURCENTAGE, k=1)[0] for _ in range(5)] for _ in range(3)]
+                                for ligne in grille:
+                                    print(*ligne)
+                                    time.sleep(0.5)
+                                argent_preced = copy.copy(argent)
+                                argent += calculer_gain(grille)
+                                print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
+                            tour_restant -= 1
+                            argent += int(deposer * 1.07 - deposer)
+                            print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
+                            break
                         
-                    if nb_roue == 3:
-                        argent -= 3
-                        for i in range(3):
-                            time.sleep(2)
-                            print(f"Grille numéro {i+1}")
-                            print(" ")
-                            grille = [[random.choices(SYMBOLES, weights=POURCENTAGE, k=1)[0] for _ in range(5)] for _ in range(3)]
-                            for ligne in grille:
-                                print(*ligne)
-                                time.sleep(0.5)
-                            argent_preced = copy.copy(argent)
-                            argent += calculer_gain(grille)
-                            print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
-                        tour_restant -= 1
-                        argent += int(deposer * 1.07 - deposer)
-                        print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
-                
+                        else:
+                            print("Veuillez entrer un numéro valide (7 ou 3).")
+                        
+
             else:
                 print("Vous n'avez plus de tirage de disponible")
-
-
-        if choix == "3":
-                print("Les symboles et leurs chances d'appartions et valeurs")
-                print(f"{SYMBOLES}\n{POURCENTAGE}\n")
-                print(f"{VALEURS_SYMBOLES}")
                 
         
         if choix == "2":
@@ -142,10 +147,22 @@ def jeu():
             tour_restant += 4
             dette_suivante = dette * 3
             dette += -dette + dette_suivante
-                 
+                
+        if choix == "3":
+            while True:
+                print("Les symboles et leurs chances d'appartions et valeurs")
+                print(f"{SYMBOLES}\n{POURCENTAGE}\n")
+                print(f"{VALEURS_SYMBOLES}")
+                n = input("\nCommandes: \n1. Quitter\n")
+                if n == "1":
+                    break
+        if choix == "4":
+            while True:
+                print("\nLes multiplicateurs des formes : ")
+                print(MULTIPLICATEURS_FORME)
+                n = input("\n Commandes : \n1. Quitter\n")
+                if n == "1":
+                    break
 
-        
-
-        
 if __name__ == "__main__":
     jeu()
