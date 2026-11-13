@@ -166,7 +166,7 @@ def telephone():
 def jeu():
     dette = 100
     deposer = 30
-    tour_restant = 150
+    tour_restant = 4
     argent = 14
 
     while True:
@@ -200,7 +200,7 @@ def jeu():
                         argent += int(deposer * 1.07 - deposer)
                         print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
                         n = random.randint(1, 100)
-                        if n >= 33:
+                        if n <= 33:
                             print("\n Le téléphone sonne ! Choisissez un bonus ! ")
                             while True:
                                 telephone()
@@ -223,7 +223,7 @@ def jeu():
                         argent += int(deposer * 1.07 - deposer)
                         print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
                         n = random.randint(1, 100)
-                        if n >= 0:
+                        if n <= 33:
                             print("\n Le téléphone sonne ! Choisissez un bonus ! ")
                             while True:
                                 telephone()
@@ -255,9 +255,100 @@ def jeu():
             while True:
                 print("\nLes multiplicateurs des formes : ")
                 print(MULTIPLICATEURS_FORME)
-                n = input("\n Commandes : \n1. Quitter\n")
+                n = input("\nDescription : Hor, Vert, Diag, Hor-L, Hor-XL, Zig, Zag, Above, Below, Eye, Jackpot \nCommandes : \n1. Quitter\n")
                 if n == "1":
                     break
+                if n == "Hor":
+                    while True:
+                        print("⚫ ⚫ ⚫ ⚫ ⚫")
+                        print("⚫ 🍋 🍋 🍋 ⚫")
+                        print("⚫ ⚫ ⚫ ⚫ ⚫")
+                        a = input("\nCommandes : \n1. Quitter\n")
+                        if a == "1":
+                           break
+                if n == "Vert":
+                    while True:
+                        print("⚫ ⚫ 🍋 ⚫ ⚫")
+                        print("⚫ ⚫ 🍋 ⚫ ⚫")
+                        print("⚫ ⚫ 🍋 ⚫ ⚫")
+                        a = input("\nCommandes : \n1. Quitter\n")
+                        if a == "1":
+                           break
+                if n == "Diag":
+                    while True:
+                        print("⚫ 🍋 ⚫ ⚫ ⚫")
+                        print("⚫ ⚫ 🍋 ⚫ ⚫")
+                        print("⚫ ⚫ ⚫ 🍋 ⚫")
+                        a = input("\nCommandes : \n1. Quitter\n")
+                        if a == "1":
+                           break
+                if n == "Hor-L":
+                    while True:
+                        print("⚫ ⚫ ⚫ ⚫ ⚫")
+                        print("⚫ 🍋 🍋 🍋 🍋")
+                        print("⚫ ⚫ ⚫ ⚫ ⚫")
+                        a = input("\nCommandes : \n1. Quitter\n")
+                        if a == "1":
+                           break
+                if n == "Hor-X":
+                    while True:
+                        print("⚫ ⚫ ⚫ ⚫ ⚫")
+                        print("🍋 🍋 🍋 🍋 🍋")
+                        print("⚫ ⚫ ⚫ ⚫ ⚫")
+                        a = input("\nCommandes : \n1. Quitter\n")
+                        if a == "1":
+                           break
+                if n == "Zig":
+                    while True:
+                        print("⚫ ⚫ 🍋 ⚫ ⚫")
+                        print("⚫ 🍋 ⚫ 🍋 ⚫")
+                        print("🍋 ⚫ ⚫ ⚫ 🍋")
+                        a = input("\nCommandes : \n1. Quitter\n")
+                        if a == "1":
+                           break
+                if n == "Zag":
+                    while True:
+                        print("🍋 ⚫ ⚫ ⚫ 🍋")
+                        print("⚫ 🍋 ⚫ 🍋 ⚫")
+                        print("⚫ ⚫ 🍋 ⚫ ⚫")
+                        a = input("\nCommandes : \n1. Quitter\n")
+                        if a == "1":
+                           break
+                if n == "Above":
+                    while True:
+                        print("⚫ ⚫ 🍋 ⚫ ⚫")
+                        print("⚫ 🍋 ⚫ 🍋 ⚫")
+                        print("🍋 🍋 🍋 🍋 🍋")
+                        a = input("\nCommandes : \n1. Quitter\n")
+                        if a == "1":
+                           break
+                if n == "Below":
+                    while True:
+                        print("🍋 🍋 🍋 🍋 🍋")
+                        print("⚫ 🍋 ⚫ 🍋 ⚫")
+                        print("⚫ ⚫ 🍋 ⚫ ⚫")
+                        a = input("\nCommandes : \n1. Quitter\n")
+                        if a == "1":
+                           break
+                if n == "Eye":
+                    while True:
+                        print("⚫ 🍋 🍋 🍋 ⚫")
+                        print("🍋 🍋 ⚫ 🍋 🍋")
+                        print("⚫ 🍋 🍋 🍋 ⚫")
+                        a = input("\nCommandes : \n1. Quitter\n")
+                        if a == "1":
+                           break
+                if n == "Jackpot":
+                    while True:
+                        print("🍋 🍋 🍋 🍋 🍋")
+                        print("🍋 🍋 🍋 🍋 🍋")
+                        print("🍋 🍋 🍋 🍋 🍋")
+                        a = input("\nCommandes : \n1. Quitter\n")
+                        if a == "1":
+                           break
+
+
+
 
         if tour_restant == 0 and deposer + argent < dette:
             print("Malheureusement, vous ne pouvez plus payer vos dettes. Vous êtes éliminé.")
@@ -266,13 +357,13 @@ def jeu():
             print("Vous avez déjà assez d'argent !")
             choix_continuer = input("Voulez vous terminer la manche ou continuer ?")
             if choix_continuer == "Terminer":
-                tour_restant += 4
+                tour_restant = 4
                 dette_suivante = dette * 3
                 dette += -dette + dette_suivante
             elif choix_continuer == "Continuer":
                 continue
         elif dette <= deposer:
-            tour_restant += 4
+            tour_restant = 4
             dette_suivante = dette * 3
             dette += -dette + dette_suivante
                  
