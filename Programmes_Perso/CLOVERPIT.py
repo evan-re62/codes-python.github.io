@@ -15,7 +15,17 @@ VALEURS_SYMBOLES = {"🍋": 2, "🍒": 2, "🍀": 3,
 MULTIPLICATEURS_FORME = {"Hor": 1, "Vert": 1, "Diag": 1, "Hor-L": 2, "Hor-XL": 3, 
                          "Zig": 4, "Zag": 4, "Above": 7, "Below": 7, "Eye": 8, "JACKPOT": 10}
 
+
+Trinkets = ["Ankh", "Horseshoe", ""]
+
+
+
+
+
+
+
 INVENTAIRE = []
+
 
 def calculer_gain(grille):
     gain = 0
@@ -56,7 +66,7 @@ def calculer_gain(grille):
     return gain
 
 
-def telephone():
+def telephone(nb_ticket):
     Choix1 = ""
     Choix2 = ""
     Choix3 = ""
@@ -121,6 +131,7 @@ def telephone():
                 augm_multi_forme3 = random.randint(1, 2)
                 choix3_id = 3
                 Choix3 = print(f"\n3. Augmenter la valeur de {forme3} de {augm_multi_forme3}")
+    print("\n4. Relancer (coûte 1 ticket)")
 
     choix = input("\n")
     if choix == "1":
@@ -162,19 +173,27 @@ def telephone():
             VALEURS_SYMBOLES[val_symb3] += augm_val_symb3
         if choix3_id == 3:
             MULTIPLICATEURS_FORME[forme3] += augm_multi_forme3
-        
+    if choix == "4":
+        if nb_ticket > 0:
+            nb_ticket += -1
+            telephone(nb_ticket)
+        else:
+            print("Vous n'avez plus de ticket.")
+    return nb_ticket
+
+
 def jeu():
     dette = 100
     deposer = 30
     tour_restant = 4
-    argent = 14
-
+    argent = 13
+    nb_ticket = 2
     while True:
         print(f"\nDette = {dette}")
         print(f"\nArgent deposer = {deposer}")
         print(f"\nTours restants = {tour_restant}")
         print("\nQue voulez-vous faire ?\n 1. Jouer\n 2. Déposer\n 3. Les symboles\n 4. Les formes")
-        print(f"Vous avez {int(argent)}$")
+        print(f"Vous avez {int(argent)}$ et {int(nb_ticket)} tickets.")
         choix = input("")
 
         if choix == "1":
@@ -198,13 +217,14 @@ def jeu():
                             print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
                         tour_restant -= 1
                         argent += int(deposer * 1.07 - deposer)
-                        print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
                         n = random.randint(1, 100)
-                        if n <= 33:
+                        if n <= 40:
                             print("\n Le téléphone sonne ! Choisissez un bonus ! ")
                             while True:
-                                telephone()
+                                telephone(nb_ticket)
                                 break
+                        print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
+                        nb_ticket += 1
                         
                     if nb_roue == 3:
                         argent -= 3
@@ -221,13 +241,14 @@ def jeu():
                             print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
                         tour_restant -= 1
                         argent += int(deposer * 1.07 - deposer)
-                        print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
                         n = random.randint(1, 100)
-                        if n <= 33:
+                        nb_ticket += 2
+                        if n <= 40:
                             print("\n Le téléphone sonne ! Choisissez un bonus ! ")
                             while True:
-                                telephone()
+                                telephone(nb_ticket)
                                 break
+                        print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
                 
             else:
                 print("Vous n'avez plus de tirage de disponible")        
@@ -329,7 +350,7 @@ def jeu():
                         print("⚫ ⚫ 🍋 ⚫ ⚫")
                         a = input("\nCommandes : \n1. Quitter\n")
                         if a == "1":
-                           break
+                           break 
                 if n == "Eye":
                     while True:
                         print("⚫ 🍋 🍋 🍋 ⚫")
