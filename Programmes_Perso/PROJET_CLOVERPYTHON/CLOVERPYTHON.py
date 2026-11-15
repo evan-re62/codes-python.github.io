@@ -1,9 +1,37 @@
 #LE CODE N'A PAS ÉTÉ GÉNÉRÉ PART IA
 #Copyright Evan Renoult (ne pas voler svp)
+#Les sons sont tirés du jeu original. Site utilisé : https://downloads.khinsider.com/game-soundtracks/album/cloverpit-windows-gamerip-2025
 import random
 import time
 import copy
 import sys
+import pygame
+import os 
+
+# - - - SON - - -
+
+
+DOSSIER = os.path.dirname(os.path.abspath(__file__))
+pygame.mixer.init()
+
+
+Lancement_Machine = pygame.mixer.Sound(os.path.join(DOSSIER, "Lancement_Machine.mp3"))
+Fin_Tour = pygame.mixer.Sound(os.path.join(DOSSIER, "Fin_Tour.mp3"))
+Phone_Appel = pygame.mixer.Sound(os.path.join(DOSSIER, "Phone_Appel.mp3"))
+Phone_Select = pygame.mixer.Sound(os.path.join(DOSSIER, "Phone_Select.mp3"))
+Phone_Reroll = pygame.mixer.Sound(os.path.join(DOSSIER, "Phone_Reroll.mp3"))
+Bouton = pygame.mixer.Sound(os.path.join(DOSSIER, "Bouton.mp3"))
+Deposer = pygame.mixer.Sound(os.path.join(DOSSIER, "Deposer.mp3"))
+Roue = pygame.mixer.Sound(os.path.join(DOSSIER, "Roue.mp3"))
+Trap_Ouvre = pygame.mixer.Sound(os.path.join(DOSSIER, "Trap_Ouvre.mp3"))
+Trap_Fall = pygame.mixer.Sound(os.path.join(DOSSIER, "Trap_Fall.mp3"))
+Trap_Death = pygame.mixer.Sound(os.path.join(DOSSIER, "Trap_Death.mp3"))
+
+
+
+
+# - - - OUTILS JEUX - - -
+
 
 SYMBOLES = ["🍋", "🍒", "🍀", "🔔", "💎", "📦", "⭐"]
 
@@ -15,12 +43,12 @@ VALEURS_SYMBOLES = {"🍋": 2, "🍒": 2, "🍀": 3,
 MULTIPLICATEURS_FORME = {"Hor": 1, "Vert": 1, "Diag": 1, "Hor-L": 2, "Hor-XL": 3, 
                          "Zig": 4, "Zag": 4, "Above": 7, "Below": 7, "Eye": 8, "JACKPOT": 10}
 
-
 TRINKETS = ["Ankh", "Horseshoe", ""]
 
-
-
 INVENTAIRE = []
+
+
+# - - - GAIN D'ARGENT - - -
 
 
 def calculer_gain(grille):
@@ -62,10 +90,14 @@ def calculer_gain(grille):
     return gain
 
 
+# - - - LE TÉLÉPHONE - - -
+
+
 def telephone(nb_ticket):
     Choix1 = ""
     Choix2 = ""
     Choix3 = ""
+    print("============= TÉLÉPHONE =============")
     for i in range(3):
         n = random.randint(1, 3)
         if n == 1:
@@ -128,6 +160,7 @@ def telephone(nb_ticket):
                 choix3_id = 3
                 Choix3 = print(f"\n3. Augmenter la valeur de {forme3} de {augm_multi_forme3}")
     print("\n4. Relancer (coûte 1 ticket)")
+    print(f"\nVous avez {nb_ticket} tickets.")
 
     choix = input("\n")
     if choix == "1":
@@ -143,6 +176,7 @@ def telephone(nb_ticket):
             VALEURS_SYMBOLES[val_symb1] += augm_val_symb1
         if choix1_id == 3:
             MULTIPLICATEURS_FORME[forme1] += augm_multi_forme1
+        Phone_Select.play()
     if choix == "2":
         if choix2_id == 1:
             nombre = augm_spawn2 / 6
@@ -156,6 +190,7 @@ def telephone(nb_ticket):
                 VALEURS_SYMBOLES[val_symb2] += augm_val_symb2
         if choix2_id == 3:
             MULTIPLICATEURS_FORME[forme2] += augm_multi_forme2
+        Phone_Select.play()
     if choix == "3":
         if choix3_id == 1:
             nombre = augm_spawn3 / 6
@@ -169,14 +204,18 @@ def telephone(nb_ticket):
             VALEURS_SYMBOLES[val_symb3] += augm_val_symb3
         if choix3_id == 3:
             MULTIPLICATEURS_FORME[forme3] += augm_multi_forme3
+        Phone_Select.play()
     if choix == "4":
         if nb_ticket > 0:
             nb_ticket += -1
+            Phone_Reroll.play()
             telephone(nb_ticket)
         else:
             print("Vous n'avez plus de ticket.")
     return nb_ticket
 
+
+# - - - LE JEU PRINCIPAL - - - 
 
 def jeu():
     dette = 100
@@ -185,9 +224,11 @@ def jeu():
     argent = 13
     nb_ticket = 2
     while True:
-        print(f"\nDette = {dette}")
-        print(f"\nArgent deposer = {deposer}")
-        print(f"\nTours restants = {tour_restant}")
+        print("============= INFOS =============")
+        print(f"\nVotre dette : {dette}$")
+        print(f"\nL'argent de déposer : {deposer}$")
+        print(f"\nNombre de tours restants : {tour_restant}")
+        print("============= CHOIX =============")
         print("\nQue voulez-vous faire ?\n 1. Jouer\n 2. Déposer\n 3. Les symboles\n 4. Les formes")
         print(f"Vous avez {int(argent)}$ et {int(nb_ticket)} tickets.")
         choix = input("")
@@ -195,13 +236,18 @@ def jeu():
         if choix == "1":
             if tour_restant > 0:
                 if argent >= 3:
-                 
+                    Bouton.play()
+                    print("============= MACHINE =============")            
                     print("\nVoulez vous faire 7 roue, ou 3 ?")
+                    argent_debase = copy.copy(argent)
                     nb_roue = int(input(""))
                     if nb_roue == 7 and argent >= 7:
                         argent -= 7
+                        Lancement_Machine.play()
+                        time.sleep(1.5)
                         for i in range(7):
                             time.sleep(2)
+                            Roue.play()
                             print(f"Grille numéro {i+1}")
                             print(" ")
                             grille = [[random.choices(SYMBOLES, weights=POURCENTAGE, k=1)[0] for _ in range(5)] for _ in range(3)]
@@ -210,22 +256,30 @@ def jeu():
                                 time.sleep(0.5)
                             argent_preced = copy.copy(argent)
                             argent += calculer_gain(grille)
-                            print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
+                            print(f"\nVous avez gagner {int(argent - argent_preced)}$\n")
                         tour_restant -= 1
+                        print(f"Vous avez gagnez {argent - argent_debase}$ au total !")
+                        time.sleep(0.5)
+                        Fin_Tour.play()
+                        time.sleep(0.6)
                         argent += int(deposer * 1.07 - deposer)
                         n = random.randint(1, 100)
                         if n <= 40:
-                            print("\n Le téléphone sonne ! Choisissez un bonus ! ")
+                            Phone_Appel.play()
+                            time.sleep(0.6)
+                            print("\n Le téléphone sonne ! Choisissez un bonus ! ")                          
                             while True:
                                 telephone(nb_ticket)
                                 break
-                        print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
                         nb_ticket += 1
                         
                     if nb_roue == 3:
                         argent -= 3
+                        Lancement_Machine.play()
+                        time.sleep(1.5)
                         for i in range(3):
                             time.sleep(2)
+                            Roue.play()
                             print(f"Grille numéro {i+1}")
                             print(" ")
                             grille = [[random.choices(SYMBOLES, weights=POURCENTAGE, k=1)[0] for _ in range(5)] for _ in range(3)]
@@ -234,46 +288,61 @@ def jeu():
                                 time.sleep(0.5)
                             argent_preced = copy.copy(argent)
                             argent += calculer_gain(grille)
-                            print(f"\nVous avez gagner {int(argent - argent_preced)}\n")
+                            print(f"\nVous avez gagner {int(argent - argent_preced)}$\n")
                         tour_restant -= 1
+                        print(f"Vous avez gagnez {argent - argent_debase}$ au total !")
+                        time.sleep(0.5)
+                        Fin_Tour.play()
+                        time.sleep(0.6)
                         argent += int(deposer * 1.07 - deposer)
                         n = random.randint(1, 100)
                         nb_ticket += 2
                         if n <= 40:
                             print("\n Le téléphone sonne ! Choisissez un bonus ! ")
+                            Phone_Appel.play()
+                            time.sleep(0.6)
                             while True:
                                 telephone(nb_ticket)
                                 break
-                        print(f"\nVous avez gagnez vos intérêts : {int(deposer * 1.07 - deposer)}$")
                 
             else:
                 print("Vous n'avez plus de tirage de disponible")        
         
         if choix == "2":
-            print("Combiens vouslez vous déposer ?")
-            thune = int(input(""))
-            if thune <= argent:
-                deposer += thune
-                argent -= thune
-                print(f"\nIl reste {int(dette - deposer)}$ à déposer pour passer au prochain tour")
-            else:
-                print("Veuillez entré une somme inférieur ou égale à la votre.")
+            Bouton.play()
+            print("Combiens voulez-vous déposer ? (à la fin de chaque tour, vous gagnez +7% de vos intérêts !)")
+            try:
+                thune = int(input(""))
+                if thune <= argent:
+                    deposer += thune
+                    argent -= thune
+                    Deposer.play()
+                else:
+                    print("Veuillez entrer une somme inférieur ou égale à la votre.")
+            except ValueError:
+                print("Veuillez entrer un nombre. ")
 
         if choix == "3":
+            Bouton.play()
             while True:
-                print("Les symboles et leurs chances d'appartions et valeurs")
+                print("============= LES SYMBOLES =============")
+                print("Les symboles, leurs chances d'appartions et valeurs")
                 print(f"{SYMBOLES}\n{[round(p, 1) for p in POURCENTAGE]}\n")
                 print(f"{VALEURS_SYMBOLES}")
                 n = input("\nCommandes: \n1. Quitter\n")
                 if n == "1":
+                    Bouton.play()
                     break
 
         if choix == "4":
+            Bouton.play()
             while True:
+                print("============= LES FORMES =============")
                 print("\nLes multiplicateurs des formes : ")
                 print(MULTIPLICATEURS_FORME)
                 n = input("\nDescription : Hor, Vert, Diag, Hor-L, Hor-XL, Zig, Zag, Above, Below, Eye, Jackpot \nCommandes : \n1. Quitter\n")
                 if n == "1":
+                    Bouton.play()
                     break
                 if n == "Hor":
                     while True:
@@ -369,16 +438,23 @@ def jeu():
 
         if tour_restant == 0 and deposer + argent < dette:
             print("Malheureusement, vous ne pouvez plus payer vos dettes. Vous êtes éliminé.")
+            Trap_Ouvre.play()
+            time.sleep(0.6)
+            Trap_Fall.play()
+            time.sleep(2.8)
+            Trap_Death.play()
+            time.sleep(2)
             sys.exit()
         elif dette <= deposer and tour_restant == 4:
             print("Vous avez déjà assez d'argent !")
             choix_continuer = input("Voulez vous terminer la manche ou continuer ?")
             if choix_continuer == "Terminer":
+                nb_ticket += 5
                 tour_restant = 4
                 dette_suivante = dette * 3
                 dette += -dette + dette_suivante
             elif choix_continuer == "Continuer":
-                continue
+                Continuer = True
         elif dette <= deposer:
             tour_restant = 4
             dette_suivante = dette * 3
