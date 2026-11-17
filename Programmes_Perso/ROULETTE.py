@@ -22,7 +22,17 @@ def roulette():
     print(RESULTAT)
     return RESULTAT
 
-def calculer_gain(choix, cases=None):
+def calculer_gain(RESULTAT, choix, Solde, Mise, cases=None):
+    Solde -= Mise
+    gain = 0
+    if choix == "Rouge":
+      if RESULTAT.split(" ")[1] == choix.split(" ")[1]:
+        gain += Mise*2
+    elif choix == "Noir":
+      if RESULTAT.split(" ")[1] == choix.split(" ")[1]:
+         gain += Mise*2
+               
+
 
 
 
