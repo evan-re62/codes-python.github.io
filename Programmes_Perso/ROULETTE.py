@@ -1,6 +1,6 @@
 import random
 
-TABLE = [
+TABLE = [     "0 Vert",
   "01 Noir", "02 Rouge", "03 Noir",
   "04 Rouge", "05 Noir", "06 Rouge",
   "07 Noir", "08 Rouge", "09 Noir",
@@ -18,7 +18,7 @@ TABLE = [
 
 def roulette():
     RESULTAT = None 
-    RESULTAT = TABLE[random.randint(0, 35)]
+    RESULTAT = TABLE[random.randint(0, 36)]
     print(RESULTAT)
     return RESULTAT
 
@@ -26,13 +26,44 @@ def calculer_gain(RESULTAT, choix, Solde, Mise, cases=None):
     Solde -= Mise
     gain = 0
     if choix == "Rouge":
-      if RESULTAT.split(" ")[1] == choix.split(" ")[1]:
+      if RESULTAT.split(" ")[1] == choix:
         gain += Mise*2
     elif choix == "Noir":
-      if RESULTAT.split(" ")[1] == choix.split(" ")[1]:
-         gain += Mise*2
-               
+      if RESULTAT.split(" ")[1] == choix:
+        gain += Mise*2
+    elif RESULTAT.split(" ")[0] == choix.split(" ")[0]:
+      gain += Mise*35
+    elif choix == "Colonne 1":
+      if RESULTAT in [TABLE[1 + 3*i] for i in range(12)]:
+        gain += Mise*2.5
+    elif choix == "Colonne 2":
+      if RESULTAT in [TABLE[2 + 3*i] for i in range(12)]:
+        gain += Mise*2.5
+    elif choix == "Colonne 3":
+      if RESULTAT in [TABLE[3 + 3*i] for i in range(12)]:
+        gain += Mise*2.5
+    elif choix == "Cheval" and cases != None:
+      chevaux_valides = (
+          [[TABLE[0], TABLE[i]] for i in (1, 2, 3)] +
+          [[TABLE[i], TABLE[i + 1]] for i in range(1, 36) if i % 3 != 0] +
+          [[TABLE[i], TABLE[i + 3]] for i in range(1, 34)]
+      )
+      if sorted(cases) in chevaux_valides and RESULTAT in cases:
+        gain += Mise*18
+    elif choix == "Transversal" and cases != None:
+      transver_valides = (
+        [TABLE[0:3]] +
+        [[TABLE[i], TABLE[i +1], TABLE[i + 2]] for i in range(1, 36, 3)] )
+      if sorted(cases) in transver_valides and RESULTAT in cases:
+        gain += 12*Mise
+    elif choix == "Carré" and cases != None:
+      carrés_valides = (
+        [TABLE[0:4]] +
+        [[TABLE[i], TABLE[i + 1], TABLE[i + 3], TABLE[i + 4]] for i in range(1, 33) if i % 3 != 0] )
+      if sorted(cases) in carrés_valides and RESULTAT in cases:
+        gain += Mise*9
+    Solde += gain
+    return Solde
 
-
-
-
+       
+print(calculer_gain(roulette(), "Transversal", 100, 100, ["0 Vert", "01 Noir", "02 Rouge"]))
